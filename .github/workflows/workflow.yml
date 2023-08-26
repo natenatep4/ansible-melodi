@@ -12,12 +12,16 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    env:
+      AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
+
     steps:
       # Clone Repo
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3    
 
-      - name: Check files
-        run: ls
+      - name: Generate SSH Key
+        run: echo ${{ secrets.ANSIBLE_SSH_KEY }} > ansible_key
 
       - name: Test Ansible Version
-        run: ansible --version 
+        run: ansible -i aws_ec2.yml --private-key=ansible_key -m ping all -u ec2-user
