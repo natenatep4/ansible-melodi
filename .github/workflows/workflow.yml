@@ -31,4 +31,4 @@ jobs:
           /opt/pipx/venvs/ansible-core/bin/python -m pip install boto3 boto botocore
 
       - name: Test Ansible Inventory
-        run: ansible-inventory  -i aws_ec2.yml  --list 
+        run: ansible -i aws_ec2.yml --private-key=ansible_key -m ping all -u ec2-user
